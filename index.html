@@ -3,319 +3,407 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DevNest · 个人技术资源博客</title>
+<title>战神帐号铺 · 和平精英账号交易</title>
 <style>
-  :root{
-    /* 暗色拟态核心变量 */
-    --bg: #1c1f26;
-    --surface: #1c1f26;
-    --surface-2: #20242c;
-    --text: #e6e9ef;
-    --text-dim: #9aa3b2;
-    --accent: #6c8cff;
-    --accent-soft: rgba(108,140,255,.15);
-    --shadow-dark: rgba(0,0,0,.55);
-    --shadow-light: rgba(255,255,255,.045);
-    --radius: 22px;
-    --gap: clamp(16px, 3vw, 28px);
+  :root {
+    --bg: #1c2026;
+    --bg-light: #22262e;
+    --bg-dark: #16191e;
+    --txt: #d7dde5;
+    --txt-dim: #8a93a0;
+    --accent: #2bd4a7;
+    --accent-2: #ffb347;
+    --danger: #ff6b6b;
+    --radius: 18px;
+    --shadow-dark: -6px -6px 14px rgba(0,0,0,.55), 6px 6px 14px rgba(0,0,0,.55);
+    --shadow-inset: inset -4px -4px 9px rgba(0,0,0,.5), inset 4px 4px 9px rgba(0,0,0,.5);
+    --shadow-btn: -4px -4px 10px rgba(255,255,255,.03), 4px 4px 10px rgba(0,0,0,.55);
   }
 
-  *{ box-sizing:border-box; margin:0; padding:0; }
-  html{ scroll-behavior:smooth; }
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    padding:0 clamp(14px,4vw,40px) 60px;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--txt);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 40px;
   }
 
-  /* 拟态基础：凸起面 */
-  .neumo{
-    background:var(--surface);
-    border-radius:var(--radius);
-    box-shadow: 8px 8px 18px var(--shadow-dark),
-               -8px -8px 18px var(--shadow-light);
+  /* ---------- 工具栏品牌 ---------- */
+  .toolbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
   }
-  /* 拟态：内凹（输入框/搜索） */
-  .neumo-inset{
-    background:var(--surface);
-    border-radius:var(--radius);
-    box-shadow: inset 6px 6px 12px var(--shadow-dark),
-                inset -6px -6px 12px var(--shadow-light);
+  .toolbar-brand .logo {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    background: var(--bg);
+    box-shadow: var(--shadow-dark);
+    display: grid; place-items: center;
+    font-size: 1.4rem;
+    color: var(--accent);
+  }
+  .toolbar-brand span small { display:block; font-size:.7rem; font-weight:400; color: var(--txt-dim); letter-spacing:2px; }
+  .hero-card {
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--bg-light), var(--bg-dark));
+    box-shadow: var(--shadow-dark);
+    padding: 48px 40px;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 30px;
+    align-items: center;
+  }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height:1.2; margin-bottom: 16px; }
+  .hero h1 b { color: var(--accent); }
+  .hero p { color: var(--txt-dim); margin-bottom: 26px; max-width: 480px; }
+  .hero-badges { display:flex; gap:12px; flex-wrap:wrap; }
+  .badge {
+    padding: 10px 16px; border-radius: 12px;
+    background: var(--bg); box-shadow: var(--shadow-inset);
+    font-size: .85rem; color: var(--txt-dim);
+  }
+  .badge b { color: var(--accent-2); }
+  .hero-art {
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    background: var(--bg);
+    box-shadow: var(--shadow-inset);
+    display: grid; place-items: center;
+    font-size: 5rem;
   }
 
-  /* ===== 顶部导航 ===== */
-  header{
-    position:sticky; top:0; z-index:50;
-    display:flex; align-items:center; justify-content:space-between;
-    gap:16px; flex-wrap:wrap;
-    padding:16px clamp(14px,4vw,40px);
-    margin:0 calc(-1 * clamp(14px,4vw,40px)) 28px;
-    background:var(--bg);
+  /* ---------- 搜索 / 筛选 ---------- */
+  .toolbar {
+    max-width: 1180px;
+    margin: 28px auto 26px;
+    padding: 0 24px;
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
   }
-  .brand{ display:flex; align-items:center; gap:12px; font-weight:700; font-size:1.2rem; }
-  .brand .logo{
-    width:42px; height:42px; border-radius:14px;
-    display:grid; place-items:center; font-size:1.2rem;
-    color:var(--accent);
-    background:var(--surface);
-    box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+  /* ---------- 支付弹窗 ---------- */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.62);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; padding: 20px;
   }
-  nav{ display:flex; gap:10px; flex-wrap:wrap; }
-  nav a{
-    color:var(--text-dim); text-decoration:none; font-size:.92rem;
-    padding:9px 16px; border-radius:14px;
-    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
-    transition:.2s;
+  .modal-overlay.show { display: flex; }
+  .modal {
+    position: relative;
+    width: 320px; max-width: 100%;
+    background: var(--bg);
+    box-shadow: var(--shadow-dark);
+    border-radius: var(--radius);
+    padding: 30px 24px 26px;
+    text-align: center;
   }
-  nav a:hover{ color:var(--text); transform:translateY(-1px); }
-  nav a:active{ box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 34px; height: 34px; border: none; cursor: pointer;
+    border-radius: 50%;
+    background: var(--bg); box-shadow: var(--shadow-btn);
+    color: var(--txt-dim); font-size: .95rem;
+    display: grid; place-items: center; transition: .2s;
+  }
+  .modal-close:hover { color: var(--accent); box-shadow: var(--shadow-inset); }
+  .modal-title { font-size: 1.1rem; margin-bottom: 4px; }
+  .pay-no { font-size: .78rem; color: var(--txt-dim); letter-spacing: 1px; margin: 8px 0 14px; }
+  .pay-no span { color: var(--accent); font-weight: 700; }
+  .qr-box { display: flex; justify-content: center; margin-bottom: 16px; }
+  .qr {
+    width: 200px; height: 200px;
+    display: grid; gap: 0;
+    background: #fff; padding: 10px; border-radius: 10px;
+    box-shadow: var(--shadow-inset);
+  }
+  .qr-cell { background: #fff; }
+  .qr-cell.on { background: #14181d; }
+  .pay-amount { font-size: 1.5rem; font-weight: 800; color: var(--accent-2); margin-bottom: 8px; }
+  .countdown { font-size: .85rem; color: var(--txt-dim); margin-bottom: 14px; }
+  .countdown span { color: var(--danger); font-weight: 700; font-size: 1rem; }
+  .pay-tip { font-size: .75rem; color: var(--txt-dim); line-height: 1.5; }
 
-  /* ===== Hero ===== */
-  .hero{
-    padding:clamp(28px,5vw,54px);
-    margin-bottom:var(--gap);
-    display:grid; gap:22px;
+  /* ---------- 商品网格 ---------- */
+  .grid {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
   }
-  .hero h1{ font-size:clamp(1.8rem,5vw,3rem); line-height:1.15; }
-  .hero h1 span{ color:var(--accent); }
-  .hero p{ color:var(--text-dim); max-width:60ch; font-size:1.02rem; }
-  .search{
-    display:flex; align-items:center; gap:12px;
-    padding:6px 6px 6px 20px;
-    max-width:520px;
+  .card {
+    background: var(--bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-dark);
+    padding: 22px;
+    transition: transform .25s, box-shadow .25s;
+    display: flex; flex-direction: column; gap: 14px;
   }
-  .search input{
-    flex:1; border:none; background:transparent; outline:none;
-    color:var(--text); font-size:1rem; padding:12px 4px;
+  .card:hover { transform: translateY(-6px); }
+  .card .thumb {
+    height: 150px; border-radius: 14px;
+    background: linear-gradient(135deg, #2a2f38, #1a1e24);
+    box-shadow: var(--shadow-inset);
+    display: grid; place-items: center;
+    font-size: 3.2rem;
+    position: relative;
   }
-  .search input::placeholder{ color:var(--text-dim); }
-  .search button{
-    border:none; cursor:pointer; color:#fff; font-weight:600;
-    padding:12px 22px; border-radius:16px;
-    background:linear-gradient(135deg,var(--accent),#8a6cff);
-    box-shadow: 4px 4px 10px var(--shadow-dark);
-    transition:.2s;
+  .card .tag {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--accent); color: #06281f;
+    font-size: .72rem; font-weight: 700;
+    padding: 5px 11px; border-radius: 9px;
   }
-  .search button:active{ transform:scale(.97); }
+  .card .tag.hot { background: var(--accent-2); color: #3a2700; }
+  .card .tag.vip { background: #b07cff; color: #fff; }
+  .card h3 { font-size: 1.08rem; }
+  .card .stats { display:flex; flex-wrap: wrap; gap: 8px; }
+  .card .stats span {
+    font-size: .76rem; color: var(--txt-dim);
+    background: var(--bg-light); border-radius: 8px;
+    padding: 4px 9px; box-shadow: var(--shadow-inset);
+  }
+  .card .row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: auto; padding-top: 6px;
+  }
+  .price { font-size: 1.35rem; font-weight: 800; color: var(--accent-2); }
+  .price small { font-size:.8rem; color: var(--txt-dim); font-weight:400; }
+  .buy {
+    border: none; cursor: pointer;
+    padding: 10px 20px; border-radius: 12px;
+    background: var(--bg); box-shadow: var(--shadow-btn);
+    color: var(--accent); font-weight: 700; font-size: .9rem;
+    transition: .2s;
+  }
+  .buy:hover { box-shadow: var(--shadow-inset); color: var(--accent-2); }
 
-  /* ===== 统计条 ===== */
-  .stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:var(--gap); margin-bottom:var(--gap); }
-  .stat{ padding:22px; text-align:center; }
-  .stat .num{ font-size:1.8rem; font-weight:800; color:var(--accent); }
-  .stat .label{ color:var(--text-dim); font-size:.85rem; margin-top:4px; }
-
-  /* ===== 区块标题 ===== */
-  .section-title{ display:flex; align-items:center; gap:12px; margin:36px 6px 18px; }
-  .section-title h2{ font-size:1.4rem; }
-  .section-title .bar{ width:6px; height:26px; border-radius:6px; background:var(--accent);
-    box-shadow:0 0 12px var(--accent-soft); }
-
-  /* ===== 资源卡片网格 ===== */
-  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:var(--gap); }
-  .card{ padding:24px; transition:.25s; cursor:pointer; }
-  .card:hover{ transform:translateY(-4px); box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light); }
-  .card .tag{
-    display:inline-block; font-size:.72rem; letter-spacing:.04em; text-transform:uppercase;
-    color:var(--accent); background:var(--accent-soft);
-    padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  /* ---------- 信任区 ---------- */
+  .trust {
+    max-width: 1180px; margin: 44px auto 0; padding: 0 24px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 20px;
   }
-  .card h3{ font-size:1.15rem; margin-bottom:8px; }
-  .card p{ color:var(--text-dim); font-size:.9rem; }
-  .card .meta{ display:flex; gap:14px; margin-top:16px; color:var(--text-dim); font-size:.8rem; }
-  .card .meta span{ display:flex; align-items:center; gap:5px; }
-
-  /* ===== 分类胶囊 ===== */
-  .cats{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:var(--gap); }
-  .cat{
-    padding:12px 20px; border-radius:999px; cursor:pointer; color:var(--text-dim);
-    font-size:.88rem; transition:.2s;
-    box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+  .trust .item {
+    background: var(--bg); border-radius: var(--radius);
+    box-shadow: var(--shadow-dark); padding: 24px;
+    text-align: center;
   }
-  .cat:hover{ color:var(--text); }
-  .cat.active{ color:var(--accent); box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); }
+  .trust .item .ico { font-size: 2rem; margin-bottom: 10px; }
+  .trust .item h4 { font-size: 1rem; margin-bottom: 6px; }
+  .trust .item p { font-size: .82rem; color: var(--txt-dim); }
 
-  /* ===== 关于/订阅 ===== */
-  .about{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:var(--gap); align-items:stretch; }
-  .about .panel{ padding:30px; }
-  .about h3{ font-size:1.25rem; margin-bottom:12px; }
-  .about p{ color:var(--text-dim); font-size:.92rem; }
-  .about ul{ list-style:none; margin-top:14px; display:grid; gap:10px; }
-  .about li{ display:flex; align-items:center; gap:10px; color:var(--text-dim); font-size:.9rem; }
-  .about li::before{ content:""; width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent-soft); }
-
-  .subscribe{ display:flex; gap:12px; margin-top:20px; flex-wrap:wrap; }
-  .subscribe input{
-    flex:1; min-width:180px; border:none; background:transparent; outline:none; color:var(--text);
-    padding:14px 18px; font-size:.95rem;
+  /* ---------- 页脚 ---------- */
+  footer {
+    max-width: 1180px; margin: 50px auto 0; padding: 28px 24px 0;
+    border-top: 1px solid rgba(0,0,0,.3);
+    color: var(--txt-dim); font-size: .82rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
   }
-  .subscribe input::placeholder{ color:var(--text-dim); }
-  .subscribe button{
-    border:none; cursor:pointer; color:#fff; font-weight:600; padding:14px 24px; border-radius:16px;
-    background:linear-gradient(135deg,var(--accent),#8a6cff);
-    box-shadow: 4px 4px 10px var(--shadow-dark); transition:.2s;
-  }
-  .subscribe button:active{ transform:scale(.97); }
+  footer a { color: var(--txt-dim); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
 
-  /* ===== 页脚 ===== */
-  footer{ text-align:center; color:var(--text-dim); font-size:.85rem; margin-top:50px; padding-top:30px; }
-  footer .neumo{ display:inline-flex; gap:18px; padding:14px 22px; margin-bottom:18px; }
-  footer a{ color:var(--text-dim); text-decoration:none; }
-  footer a:hover{ color:var(--accent); }
-
-  @media (max-width:600px){
-    nav{ display:none; }
-    .hero{ text-align:center; }
-    .search{ margin:0 auto; }
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 760px) {
+    .hero-card { grid-template-columns: 1fr; padding: 32px 24px; }
+    .hero-art { display: none; }
   }
+
 </style>
 </head>
 <body>
 
-  <header>
-    <div class="brand">
-      <div class="logo">◆</div>
-      <span>DevNest</span>
+<div class="toolbar">
+  <div class="toolbar-brand">
+    <div class="logo">🎯</div>
+    <span>战神帐号铺<small>PEACEKEEPER ACCOUNT SHOP</small></span>
+  </div>
+</div>
+
+<main class="grid">
+
+  <article class="card">
+    <div class="thumb">🏆<span class="tag vip">稀有皮肤</span></div>
+    <h3>战神段位 · 全皮肤收藏号</h3>
+    <div class="stats"><span>段位 战神</span><span>78 套时装</span><span>12 载具</span><span>可改实名</span></div>
+    <div class="row">
+      <div class="price">¥1,288<small> / 议价</small></div>
+      <button class="buy">立即购买</button>
     </div>
-    <nav>
-      <a href="#resources">资源</a>
-      <a href="#categories">分类</a>
-      <a href="#about">关于</a>
-      <a href="#subscribe">订阅</a>
-    </nav>
-  </header>
+  </article>
 
-  <!-- Hero -->
-  <section class="hero neumo">
-    <h1>沉淀我的<span>技术资源</span><br>与学习笔记</h1>
-    <p>这里收录我在前端、后端、DevOps 与 AI 工程实践中筛选过的优质文章、工具与开源项目。一处收集，随时取用。</p>
-    <div class="search neumo-inset">
-      <input type="text" placeholder="搜索文章、工具或关键词…" aria-label="搜索">
-      <button>搜索</button>
+  <article class="card">
+    <div class="thumb">⚔️<span class="tag hot">热卖</span></div>
+    <h3>王牌 12 星 · 满级武器库</h3>
+    <div class="stats"><span>段位 王牌</span><span>满级枪械</span><span>328 服饰币</span><span>秒发货</span></div>
+    <div class="row">
+      <div class="price">¥658<small> / 包换</small></div>
+      <button class="buy">立即购买</button>
     </div>
-  </section>
+  </article>
 
-  <!-- 统计 -->
-  <section class="stats">
-    <div class="stat neumo"><div class="num">128</div><div class="label">收录文章</div></div>
-    <div class="stat neumo"><div class="num">46</div><div class="label">实用工具</div></div>
-    <div class="stat neumo"><div class="num">19</div><div class="label">开源项目</div></div>
-    <div class="stat neumo"><div class="num">3.2k</div><div class="label">月访问</div></div>
-  </section>
-
-  <!-- 资源卡片 -->
-  <div class="section-title" id="resources"><div class="bar"></div><h2>精选资源</h2></div>
-  <section class="grid">
-    <article class="card neumo">
-      <span class="tag">前端</span>
-      <h3>现代 CSS 布局完全指南</h3>
-      <p>Grid、Flexbox 与容器查询的实战组合技巧，附可运行示例。</p>
-      <div class="meta"><span>★ 收藏</span><span>🕑 8 分钟</span></div>
-    </article>
-    <article class="card neumo">
-      <span class="tag">后端</span>
-      <h3>Node.js 高性能服务设计</h3>
-      <p>事件循环、Worker 线程与连接池，从原理到压测调优。</p>
-      <div class="meta"><span>★ 收藏</span><span>🕑 12 分钟</span></div>
-    </article>
-    <article class="card neumo">
-      <span class="tag">AI</span>
-      <h3>大模型推理优化笔记</h3>
-      <p>量化、KV Cache 与批处理，把吞吐提升 3 倍的实操记录。</p>
-      <div class="meta"><span>★ 收藏</span><span>🕑 15 分钟</span></div>
-    </article>
-    <article class="card neumo">
-      <span class="tag">DevOps</span>
-      <h3>Docker 多阶段构建模板</h3>
-      <p>一套可复用的镜像瘦身方案，构建体积减少 70%。</p>
-      <div class="meta"><span>★ 收藏</span><span>🕑 6 分钟</span></div>
-    </article>
-    <article class="card neumo">
-      <span class="tag">工具</span>
-      <h3>终端效率插件合集</h3>
-      <p>fzf、ripgrep、zoxide 组合配置，让命令行快到飞起。</p>
-      <div class="meta"><span>★ 收藏</span><span>🕑 5 分钟</span></div>
-    </article>
-    <article class="card neumo">
-      <span class="tag">开源</span>
-      <h3>自建图床服务</h3>
-      <p>基于 Cloudflare R2 的轻量图床，零服务器成本部署。</p>
-      <div class="meta"><span>★ 收藏</span><span>🕑 10 分钟</span></div>
-    </article>
-  </section>
-
-  <!-- 分类 -->
-  <div class="section-title" id="categories"><div class="bar"></div><h2>资源分类</h2></div>
-  <section class="cats">
-    <div class="cat active">全部</div>
-    <div class="cat">前端</div>
-    <div class="cat">后端</div>
-    <div class="cat">AI 工程</div>
-    <div class="cat">DevOps</div>
-    <div class="cat">实用工具</div>
-    <div class="cat">开源项目</div>
-  </section>
-
-  <!-- 关于 + 订阅 -->
-  <div class="section-title" id="about"><div class="bar"></div><h2>关于与订阅</h2></div>
-  <section class="about">
-    <div class="panel neumo">
-      <h3>关于这个博客</h3>
-      <p>我是 DevNest 的维护者，一名全栈工程师。这里不追热点，只沉淀经得起复用的技术资源。</p>
-      <ul>
-        <li>所有链接均亲自试用</li>
-        <li>每周更新 2–3 篇笔记</li>
-        <li>开源可自托管的静态站点</li>
-      </ul>
+  <article class="card">
+    <div class="thumb">🚁<span class="tag">现货</span></div>
+    <h3>绝世无敌 · 限定载具号</h3>
+    <div class="stats"><span>段位 无敌</span><span>39 载具</span><span>全特效</span><span>可验号</span></div>
+    <div class="row">
+      <div class="price">¥2,480<small> / 担保</small></div>
+      <button class="buy">立即购买</button>
     </div>
-    <div class="panel neumo" id="subscribe">
-      <h3>订阅更新</h3>
-      <p>留下邮箱，新资源发布时第一时间通知你，不打扰、可随时退订。</p>
-      <div class="subscribe neumo-inset">
-        <input type="email" placeholder="you@example.com" aria-label="邮箱">
-        <button>订阅</button>
-      </div>
-    </div>
-  </section>
+  </article>
 
-  <footer>
-    <div class="neumo">
-      <a href="#">GitHub</a>
-      <a href="#">RSS</a>
-      <a href="#">微信</a>
+  <article class="card">
+    <div class="thumb">💎<span class="tag">捡漏</span></div>
+    <h3>钻石段位 · 新手练手号</h3>
+    <div class="stats"><span>段位 钻石</span><span>16 时装</span><span>安全号</span><span>低价</span></div>
+    <div class="row">
+      <div class="price">¥128<small> / 包邮</small></div>
+      <button class="buy">立即购买</button>
     </div>
-    <p>© 2026 DevNest · 用 ❤ 与拟态设计构建</p>
-  </footer>
+  </article>
+
+  <article class="card">
+    <div class="thumb">🎖️<span class="tag hot">热卖</span></div>
+    <h3>王牌 7 星 · 赛季手册满级</h3>
+    <div class="stats"><span>段位 王牌</span><span>手册满级</span><span>52 套</span><span>秒发货</span></div>
+    <div class="row">
+      <div class="price">¥498<small> / 议价</small></div>
+      <button class="buy">立即购买</button>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="thumb">🔥<span class="tag vip">VIP</span></div>
+    <h3>战神 · 至尊典藏满收藏</h3>
+    <div class="stats"><span>段位 战神</span><span>120+ 时装</span><span>全部载具</span><span>可改实名</span></div>
+    <div class="row">
+      <div class="price">¥3,980<small> / 担保</small></div>
+      <button class="buy">立即购买</button>
+    </div>
+  </article>
+
+</main>
+
+<section class="trust">
+  <div class="item"><div class="ico">🛡️</div><h4>平台担保</h4><p>资金先托管，确认收货后打款，0 风险。</p></div>
+  <div class="item"><div class="ico">✅</div><h4>验号再付</h4><p>下单前后均可验号，数据不符全额退。</p></div>
+  <div class="item"><div class="ico">⚡</div><h4>极速发货</h4><p>自动发货系统，平均 3 分钟到手。</p></div>
+  <div class="item"><div class="ico">💬</div><h4>7×24 客服</h4><p>专属客服在线，售后问题秒响应。</p></div>
+</section>
+
+<footer>
+  <div>© 2026 战神帐号铺 · 和平精英账号交易服务平台（演示页面）</div>
+  <div>
+    <a href="#">交易规则</a> · <a href="#">防骗指南</a> · <a href="#">联系客服</a>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="payModal">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" title="关闭">✕</button>
+    <h3 class="modal-title">扫码支付 · 和平精英账号</h3>
+    <div class="pay-no">支付单号：<span id="payNo"></span></div>
+    <div class="qr-box"><div class="qr" id="qr"></div></div>
+    <div class="pay-amount" id="payAmount"></div>
+    <div class="countdown">二维码有效期 <span id="countdown">15:00</span></div>
+    <p class="pay-tip">请使用微信 / 支付宝扫码支付，付款后联系客服即时发货。<br>超时请重新下单获取新收款码。</p>
+  </div>
+</div>
 
 <script>
-  // 分类筛选交互
-  const cats = document.querySelectorAll('.cat');
-  const cards = document.querySelectorAll('.card');
-  const tagMap = { '前端':'前端','后端':'后端','AI 工程':'AI','DevOps':'DevOps','实用工具':'工具','开源项目':'开源' };
-  cats.forEach(c=>c.addEventListener('click',()=>{
-    cats.forEach(x=>x.classList.remove('active'));
-    c.classList.add('active');
-    const t = c.textContent.trim();
-    cards.forEach(card=>{
-      const show = t==='全部' || card.querySelector('.tag').textContent===tagMap[t];
-      card.style.display = show ? '' : 'none';
-    });
-  }));
+  // 购买弹窗：收款码 + 随机支付单号 + 倒计时
+  const modal = document.getElementById('payModal');
+  const modalClose = document.getElementById('modalClose');
+  const payNoEl = document.getElementById('payNo');
+  const payAmountEl = document.getElementById('payAmount');
+  const countdownEl = document.getElementById('countdown');
+  const qrEl = document.getElementById('qr');
+  let timer = null;
 
-  // 搜索交互（前端演示）
-  const searchInput = document.querySelector('.search input');
-  const searchBtn = document.querySelector('.search button');
-  function doSearch(){
-    const q = searchInput.value.trim().toLowerCase();
-    cards.forEach(card=>{
-      const txt = card.textContent.toLowerCase();
-      card.style.display = (!q || txt.includes(q)) ? '' : 'none';
-    });
+  function genPayNo() {
+    const ts = Date.now().toString().slice(-8);
+    let rnd = '';
+    for (let i = 0; i < 6; i++) rnd += Math.floor(Math.random() * 10);
+    return 'PK' + ts + rnd;
   }
-  searchBtn.addEventListener('click',doSearch);
-  searchInput.addEventListener('keydown',e=>{ if(e.key==='Enter') doSearch(); });
+
+  function fmt(s) {
+    const m = String(Math.floor(s / 60)).padStart(2, '0');
+    const ss = String(s % 60).padStart(2, '0');
+    return m + ':' + ss;
+  }
+
+  function drawQR() {
+    const N = 23;
+    qrEl.style.gridTemplateColumns = 'repeat(' + N + ', 1fr)';
+    qrEl.innerHTML = '';
+    const ring = (r0, c0, r, c) => {
+      const lr = r - r0, lc = c - c0;
+      if (lr === 0 || lr === 6 || lc === 0 || lc === 6) return 1;
+      if (lr >= 2 && lr <= 4 && lc >= 2 && lc <= 4) return 1;
+      return 0;
+    };
+    const inBox = (r0, c0, r, c) => r >= r0 && r < r0 + 7 && c >= c0 && c < c0 + 7;
+    for (let r = 0; r < N; r++) {
+      for (let c = 0; c < N; c++) {
+        let on;
+        if (inBox(0, 0, r, c)) on = ring(0, 0, r, c);
+        else if (inBox(0, N - 7, r, c)) on = ring(0, N - 7, r, c);
+        else if (inBox(N - 7, 0, r, c)) on = ring(N - 7, 0, r, c);
+        else on = Math.random() > 0.5 ? 1 : 0;
+        const cell = document.createElement('div');
+        cell.className = 'qr-cell' + (on ? ' on' : '');
+        qrEl.appendChild(cell);
+      }
+    }
+  }
+
+  function startCountdown() {
+    let remain = 15 * 60; // 15 分钟
+    clearInterval(timer);
+    countdownEl.textContent = fmt(remain);
+    timer = setInterval(() => {
+      remain--;
+      if (remain <= 0) {
+        clearInterval(timer);
+        countdownEl.textContent = '已失效';
+        return;
+      }
+      countdownEl.textContent = fmt(remain);
+    }, 1000);
+  }
+
+  function openModal(amount) {
+    payNoEl.textContent = genPayNo();
+    payAmountEl.textContent = amount;
+    drawQR();
+    startCountdown();
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('show');
+    clearInterval(timer);
+    document.body.style.overflow = '';
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+  document.querySelectorAll('.buy').forEach(b => b.addEventListener('click', () => {
+    const card = b.closest('.card');
+    const priceEl = card.querySelector('.price');
+    const amount = priceEl.firstChild.textContent.trim();
+    openModal(amount);
+  }));
 </script>
 </body>
 </html>
