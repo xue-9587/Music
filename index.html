@@ -3,407 +3,300 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>战神帐号铺 · 和平精英账号交易</title>
+<title>🎵 音乐馆 · Music Hall</title>
 <style>
-  :root {
-    --bg: #1c2026;
-    --bg-light: #22262e;
-    --bg-dark: #16191e;
-    --txt: #d7dde5;
-    --txt-dim: #8a93a0;
-    --accent: #2bd4a7;
-    --accent-2: #ffb347;
-    --danger: #ff6b6b;
-    --radius: 18px;
-    --shadow-dark: -6px -6px 14px rgba(0,0,0,.55), 6px 6px 14px rgba(0,0,0,.55);
-    --shadow-inset: inset -4px -4px 9px rgba(0,0,0,.5), inset 4px 4px 9px rgba(0,0,0,.5);
-    --shadow-btn: -4px -4px 10px rgba(255,255,255,.03), 4px 4px 10px rgba(0,0,0,.55);
-  }
+/* ========== 基础 & 主题变量 ========== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#040404;
+  --panel:#0d0d0d;
+  --panel-2:#171717;
+  --tx:#ededed;
+  --tx2:#808080;
+  --p:#d6d6d6;          /* 亮灰（强调） */
+  --c:#7d7d7d;          /* 中灰（辅助） */
+  --sd:rgba(0,0,0,.9);  /* 拟物暗阴影 */
+  --sl:rgba(255,255,255,.028); /* 拟物亮阴影 */
+}
+body{
+  font-family:"PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+  color:var(--tx);
+  min-height:100vh;
+  padding:28px clamp(14px,4vw,48px) 64px;
+  background:var(--bg);
+  background-image:
+    radial-gradient(circle at 12% -5%,rgba(255,255,255,.035),transparent 42%),
+    radial-gradient(circle at 88% 8%,rgba(255,255,255,.02),transparent 42%);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1200px;margin:0 auto}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ========== 顶栏 ========== */
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px;flex-wrap:wrap}
+h1{font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:1px;display:flex;align-items:center;gap:12px}
+h1 .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--c));box-shadow:0 0 16px var(--p)}
+.badge{font-size:12px;color:var(--tx2);padding:9px 16px;border-radius:30px;background:var(--panel);box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
 
-  body {
-    font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--txt);
-    line-height: 1.6;
-    min-height: 100vh;
-    padding-bottom: 40px;
-  }
+/* ========== 横向封面播放器 ========== */
+.player{
+  display:flex;align-items:center;gap:clamp(18px,3vw,34px);
+  background:var(--panel);border-radius:24px;padding:clamp(18px,3vw,30px);
+  box-shadow:10px 10px 26px var(--sd),-9px -9px 22px var(--sl);
+  margin-bottom:34px;
+}
+.pcover{
+  flex:0 0 clamp(150px,21vw,228px);aspect-ratio:1;border-radius:18px;overflow:hidden;position:relative;
+  box-shadow:0 14px 34px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.06);
+}
+.pcover img{width:100%;height:100%;object-fit:cover;display:block}
+.pcover .fb{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:64px;background:linear-gradient(135deg,#1a1a1a,#0a0a0a)}
+.pinfo{flex:1;min-width:0}
+.ptag{font-size:11px;letter-spacing:2px;color:var(--c);margin-bottom:8px;display:block}
+.ptitle{font-size:clamp(20px,3vw,31px);font-weight:700;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.partist{color:var(--tx2);font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 
-  /* ---------- 工具栏品牌 ---------- */
-  .toolbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 700;
-    font-size: 1.15rem;
-    letter-spacing: 1px;
-    white-space: nowrap;
-  }
-  .toolbar-brand .logo {
-    width: 44px; height: 44px;
-    border-radius: 14px;
-    background: var(--bg);
-    box-shadow: var(--shadow-dark);
-    display: grid; place-items: center;
-    font-size: 1.4rem;
-    color: var(--accent);
-  }
-  .toolbar-brand span small { display:block; font-size:.7rem; font-weight:400; color: var(--txt-dim); letter-spacing:2px; }
-  .hero-card {
-    border-radius: var(--radius);
-    background: linear-gradient(135deg, var(--bg-light), var(--bg-dark));
-    box-shadow: var(--shadow-dark);
-    padding: 48px 40px;
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 30px;
-    align-items: center;
-  }
-  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height:1.2; margin-bottom: 16px; }
-  .hero h1 b { color: var(--accent); }
-  .hero p { color: var(--txt-dim); margin-bottom: 26px; max-width: 480px; }
-  .hero-badges { display:flex; gap:12px; flex-wrap:wrap; }
-  .badge {
-    padding: 10px 16px; border-radius: 12px;
-    background: var(--bg); box-shadow: var(--shadow-inset);
-    font-size: .85rem; color: var(--txt-dim);
-  }
-  .badge b { color: var(--accent-2); }
-  .hero-art {
-    aspect-ratio: 1;
-    border-radius: var(--radius);
-    background: var(--bg);
-    box-shadow: var(--shadow-inset);
-    display: grid; place-items: center;
-    font-size: 5rem;
-  }
+/* 频谱均衡器（CSS 动画，播放时滚动） */
+.eq{display:flex;gap:4px;align-items:flex-end;height:26px;margin-bottom:14px}
+.eq i{width:4px;border-radius:4px;background:#fff;height:18%;animation:eq .9s ease-in-out infinite alternate;animation-play-state:paused;opacity:.9}
+.player.playing .eq i{animation-play-state:running}
+@keyframes eq{from{height:14%}to{height:100%}}
 
-  /* ---------- 搜索 / 筛选 ---------- */
-  .toolbar {
-    max-width: 1180px;
-    margin: 28px auto 26px;
-    padding: 0 24px;
-    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
-  }
-  /* ---------- 支付弹窗 ---------- */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.62);
-    display: none; align-items: center; justify-content: center;
-    z-index: 100; padding: 20px;
-  }
-  .modal-overlay.show { display: flex; }
-  .modal {
-    position: relative;
-    width: 320px; max-width: 100%;
-    background: var(--bg);
-    box-shadow: var(--shadow-dark);
-    border-radius: var(--radius);
-    padding: 30px 24px 26px;
-    text-align: center;
-  }
-  .modal-close {
-    position: absolute; top: 14px; right: 14px;
-    width: 34px; height: 34px; border: none; cursor: pointer;
-    border-radius: 50%;
-    background: var(--bg); box-shadow: var(--shadow-btn);
-    color: var(--txt-dim); font-size: .95rem;
-    display: grid; place-items: center; transition: .2s;
-  }
-  .modal-close:hover { color: var(--accent); box-shadow: var(--shadow-inset); }
-  .modal-title { font-size: 1.1rem; margin-bottom: 4px; }
-  .pay-no { font-size: .78rem; color: var(--txt-dim); letter-spacing: 1px; margin: 8px 0 14px; }
-  .pay-no span { color: var(--accent); font-weight: 700; }
-  .qr-box { display: flex; justify-content: center; margin-bottom: 16px; }
-  .qr {
-    width: 200px; height: 200px;
-    display: grid; gap: 0;
-    background: #fff; padding: 10px; border-radius: 10px;
-    box-shadow: var(--shadow-inset);
-  }
-  .qr-cell { background: #fff; }
-  .qr-cell.on { background: #14181d; }
-  .pay-amount { font-size: 1.5rem; font-weight: 800; color: var(--accent-2); margin-bottom: 8px; }
-  .countdown { font-size: .85rem; color: var(--txt-dim); margin-bottom: 14px; }
-  .countdown span { color: var(--danger); font-weight: 700; font-size: 1rem; }
-  .pay-tip { font-size: .75rem; color: var(--txt-dim); line-height: 1.5; }
+/* 进度条 */
+.seekrow{display:flex;align-items:center;gap:12px}
+.bar{-webkit-appearance:none;appearance:none;flex:1;height:8px;border-radius:8px;background:#09090e;box-shadow:inset 2px 2px 5px var(--sd),inset -1px -1px 3px var(--sl);outline:none;cursor:pointer}
+.bar::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--c));box-shadow:0 0 12px rgba(255,255,255,.45);cursor:pointer}
+.bar::-moz-range-thumb{width:15px;height:15px;border:none;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--c));box-shadow:0 0 12px rgba(255,255,255,.45);cursor:pointer}
+.tm{font-size:12px;color:var(--tx2);font-variant-numeric:tabular-nums;min-width:38px}
 
-  /* ---------- 商品网格 ---------- */
-  .grid {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-  }
-  .card {
-    background: var(--bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-dark);
-    padding: 22px;
-    transition: transform .25s, box-shadow .25s;
-    display: flex; flex-direction: column; gap: 14px;
-  }
-  .card:hover { transform: translateY(-6px); }
-  .card .thumb {
-    height: 150px; border-radius: 14px;
-    background: linear-gradient(135deg, #2a2f38, #1a1e24);
-    box-shadow: var(--shadow-inset);
-    display: grid; place-items: center;
-    font-size: 3.2rem;
-    position: relative;
-  }
-  .card .tag {
-    position: absolute; top: 12px; left: 12px;
-    background: var(--accent); color: #06281f;
-    font-size: .72rem; font-weight: 700;
-    padding: 5px 11px; border-radius: 9px;
-  }
-  .card .tag.hot { background: var(--accent-2); color: #3a2700; }
-  .card .tag.vip { background: #b07cff; color: #fff; }
-  .card h3 { font-size: 1.08rem; }
-  .card .stats { display:flex; flex-wrap: wrap; gap: 8px; }
-  .card .stats span {
-    font-size: .76rem; color: var(--txt-dim);
-    background: var(--bg-light); border-radius: 8px;
-    padding: 4px 9px; box-shadow: var(--shadow-inset);
-  }
-  .card .row {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: auto; padding-top: 6px;
-  }
-  .price { font-size: 1.35rem; font-weight: 800; color: var(--accent-2); }
-  .price small { font-size:.8rem; color: var(--txt-dim); font-weight:400; }
-  .buy {
-    border: none; cursor: pointer;
-    padding: 10px 20px; border-radius: 12px;
-    background: var(--bg); box-shadow: var(--shadow-btn);
-    color: var(--accent); font-weight: 700; font-size: .9rem;
-    transition: .2s;
-  }
-  .buy:hover { box-shadow: var(--shadow-inset); color: var(--accent-2); }
+/* 控制按钮 */
+.ctrl{display:flex;align-items:center;gap:13px;margin-top:18px;flex-wrap:wrap}
+.btn{border:none;cursor:pointer;color:var(--tx);background:var(--panel-2);box-shadow:5px 5px 11px var(--sd),-5px -5px 11px var(--sl);border-radius:14px;display:flex;align-items:center;justify-content:center;transition:.18s;user-select:none}
+.btn:hover{color:#fff;transform:translateY(-2px)}
+.btn:active{box-shadow:inset 4px 4px 8px var(--sd),inset -4px -4px 8px var(--sl);transform:translateY(0)}
+.btn.sm{width:42px;height:42px;font-size:15px}
+.btn.play{
+  width:58px;height:58px;border-radius:50%;font-size:21px;
+  border:1px solid transparent;background:transparent;
+  background-image:linear-gradient(var(--panel),var(--panel)),linear-gradient(135deg,var(--p),var(--c));
+  background-origin:border-box;background-clip:padding-box,border-box;
+  box-shadow:0 8px 24px rgba(255,255,255,.12);
+}
+.vol{display:flex;align-items:center;gap:8px;margin-left:auto;color:var(--tx2);font-size:14px}
+.vol input{width:96px;accent-color:var(--p);height:6px;cursor:pointer}
+/* 控制图标：明文内联 SVG（零依赖） */
+.btn svg{width:19px;height:19px;display:block;pointer-events:none;filter:brightness(1.15)}
+.btn.play svg{width:26px;height:26px}
+.vol svg{width:18px;height:18px;display:block;opacity:.9}
 
-  /* ---------- 信任区 ---------- */
-  .trust {
-    max-width: 1180px; margin: 44px auto 0; padding: 0 24px;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 20px;
-  }
-  .trust .item {
-    background: var(--bg); border-radius: var(--radius);
-    box-shadow: var(--shadow-dark); padding: 24px;
-    text-align: center;
-  }
-  .trust .item .ico { font-size: 2rem; margin-bottom: 10px; }
-  .trust .item h4 { font-size: 1rem; margin-bottom: 6px; }
-  .trust .item p { font-size: .82rem; color: var(--txt-dim); }
+/* ========== 歌曲列表 ========== */
+.sec{display:flex;align-items:baseline;gap:10px;margin-bottom:16px}
+.sec b{font-size:19px}
+.sec span{font-size:13px;color:var(--tx2)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.6vw,16px)}
+/* 歌曲按钮（无封面） */
+.songbtn{
+  display:flex;align-items:center;gap:10px;width:100%;min-width:0;text-align:left;font-family:inherit;
+  color:var(--tx);cursor:pointer;background:var(--panel);border:1px solid transparent;border-radius:15px;padding:13px 13px;
+  box-shadow:6px 6px 14px var(--sd),-6px -6px 12px var(--sl);transition:transform .18s,border-color .18s;
+}
+.songbtn:hover{transform:translateY(-3px)}
+.songbtn:active{box-shadow:inset 4px 4px 9px var(--sd),inset -4px -4px 9px var(--sl);transform:translateY(0)}
+.songbtn.active{border-color:var(--p);box-shadow:6px 6px 14px var(--sd),-6px -6px 12px var(--sl),0 0 0 1px var(--p),0 9px 24px rgba(255,255,255,.1)}
+.songbtn .num{width:27px;height:27px;flex:none;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--tx2);background:var(--panel-2);box-shadow:inset 2px 2px 5px var(--sd),inset -2px -2px 5px var(--sl)}
+.songbtn.active .num{background:linear-gradient(135deg,var(--p),var(--c));color:#fff;box-shadow:none}
+.songbtn .ico{font-size:19px;flex:none;line-height:1}
+.songbtn .txt{flex:1;min-width:0}
+.songbtn .nm{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.songbtn .state{width:15px;height:15px;flex:none;display:block;opacity:0;transition:.18s;filter:brightness(1.15)}
+.songbtn.active .state{opacity:1}
 
-  /* ---------- 页脚 ---------- */
-  footer {
-    max-width: 1180px; margin: 50px auto 0; padding: 28px 24px 0;
-    border-top: 1px solid rgba(0,0,0,.3);
-    color: var(--txt-dim); font-size: .82rem;
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-  }
-  footer a { color: var(--txt-dim); text-decoration: none; }
-  footer a:hover { color: var(--accent); }
+/* ========== 返回顶部 ========== */
+#toTop{
+  position:fixed;right:clamp(16px,3vw,34px);bottom:clamp(16px,3vw,34px);z-index:50;
+  width:50px;height:50px;border-radius:50%;cursor:pointer;color:var(--tx);font-size:19px;
+  border:1px solid transparent;background:transparent;
+  background-image:linear-gradient(var(--panel),var(--panel)),linear-gradient(135deg,var(--p),var(--c));
+  background-origin:border-box;background-clip:padding-box,border-box;
+  box-shadow:0 10px 28px rgba(255,255,255,.14);
+  opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .25s,transform .25s,visibility .25s;
+}
+#toTop.show{opacity:1;visibility:visible;transform:translateY(0)}
+#toTop:hover{transform:translateY(-4px)}
 
-  /* ---------- 响应式 ---------- */
-  @media (max-width: 760px) {
-    .hero-card { grid-template-columns: 1fr; padding: 32px 24px; }
-    .hero-art { display: none; }
-  }
-
+/* ========== 响应式 ========== */
+@media(max-width:880px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .songbtn{gap:7px;padding:11px 9px;border-radius:12px}
+  .songbtn .num{width:22px;height:22px;font-size:11px}
+  .songbtn .ico{font-size:16px}
+  .songbtn .nm{font-size:12px}
+  .songbtn .state{width:12px;height:12px}
+  .player{flex-direction:column;text-align:center}
+  .pcover{flex:none;width:min(72vw,240px)}
+  .partist{justify-content:center}
+  .ctrl{justify-content:center}
+  .vol{margin-left:0;width:100%;justify-content:center}
+}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <h1><span class="dot"></span>🎵 音乐馆</h1>
+    <div class="badge">🎧 即点即播</div>
+  </header>
 
-<div class="toolbar">
-  <div class="toolbar-brand">
-    <div class="logo">🎯</div>
-    <span>战神帐号铺<small>PEACEKEEPER ACCOUNT SHOP</small></span>
-  </div>
+  <!-- 横向封面播放器 -->
+  <section class="player" id="player">
+    <div class="pcover" id="pcover"><img id="pcoverImg" alt="封面" src="https://picsum.photos/seed/musichall-cover/600?grayscale" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fb">🎵</div></div>
+    <div class="pinfo">
+      <span class="ptag">NOW PLAYING</span>
+      <div class="ptitle" id="ptitle">选择一首歌开始</div>
+      <div class="partist"><span id="partist">纯暗黑音乐馆</span></div>
+      <div class="eq" id="eq"></div>
+      <div class="seekrow">
+        <span class="tm" id="cur">0:00</span>
+        <input type="range" class="bar" id="bar" value="0" min="0" max="1000" aria-label="播放进度">
+        <span class="tm" id="dur">0:00</span>
+      </div>
+      <div class="ctrl">
+        <button class="btn sm" id="prev" title="上一首">
+          <svg viewBox="0 0 24 24" fill="#ededed"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+        <button class="btn play" id="toggle" title="播放/暂停">
+          <svg id="playImg" viewBox="0 0 24 24" fill="#ededed"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="btn sm" id="next" title="下一首">
+          <svg viewBox="0 0 24 24" fill="#ededed"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
+        </button>
+        <div class="vol">
+          <svg viewBox="0 0 24 24" fill="#ededed"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.8-1-3.3-2.5-4v8c1.5-.7 2.5-2.2 2.5-4z"/></svg>
+          <input type="range" id="vol" min="0" max="1" step="0.01" value="0.8" aria-label="音量">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 歌曲列表：4 首一行 -->
+  <div class="sec"><b>曲库</b><span id="count"></span></div>
+  <div class="grid" id="grid"></div>
 </div>
 
-<main class="grid">
-
-  <article class="card">
-    <div class="thumb">🏆<span class="tag vip">稀有皮肤</span></div>
-    <h3>战神段位 · 全皮肤收藏号</h3>
-    <div class="stats"><span>段位 战神</span><span>78 套时装</span><span>12 载具</span><span>可改实名</span></div>
-    <div class="row">
-      <div class="price">¥1,288<small> / 议价</small></div>
-      <button class="buy">立即购买</button>
-    </div>
-  </article>
-
-  <article class="card">
-    <div class="thumb">⚔️<span class="tag hot">热卖</span></div>
-    <h3>王牌 12 星 · 满级武器库</h3>
-    <div class="stats"><span>段位 王牌</span><span>满级枪械</span><span>328 服饰币</span><span>秒发货</span></div>
-    <div class="row">
-      <div class="price">¥658<small> / 包换</small></div>
-      <button class="buy">立即购买</button>
-    </div>
-  </article>
-
-  <article class="card">
-    <div class="thumb">🚁<span class="tag">现货</span></div>
-    <h3>绝世无敌 · 限定载具号</h3>
-    <div class="stats"><span>段位 无敌</span><span>39 载具</span><span>全特效</span><span>可验号</span></div>
-    <div class="row">
-      <div class="price">¥2,480<small> / 担保</small></div>
-      <button class="buy">立即购买</button>
-    </div>
-  </article>
-
-  <article class="card">
-    <div class="thumb">💎<span class="tag">捡漏</span></div>
-    <h3>钻石段位 · 新手练手号</h3>
-    <div class="stats"><span>段位 钻石</span><span>16 时装</span><span>安全号</span><span>低价</span></div>
-    <div class="row">
-      <div class="price">¥128<small> / 包邮</small></div>
-      <button class="buy">立即购买</button>
-    </div>
-  </article>
-
-  <article class="card">
-    <div class="thumb">🎖️<span class="tag hot">热卖</span></div>
-    <h3>王牌 7 星 · 赛季手册满级</h3>
-    <div class="stats"><span>段位 王牌</span><span>手册满级</span><span>52 套</span><span>秒发货</span></div>
-    <div class="row">
-      <div class="price">¥498<small> / 议价</small></div>
-      <button class="buy">立即购买</button>
-    </div>
-  </article>
-
-  <article class="card">
-    <div class="thumb">🔥<span class="tag vip">VIP</span></div>
-    <h3>战神 · 至尊典藏满收藏</h3>
-    <div class="stats"><span>段位 战神</span><span>120+ 时装</span><span>全部载具</span><span>可改实名</span></div>
-    <div class="row">
-      <div class="price">¥3,980<small> / 担保</small></div>
-      <button class="buy">立即购买</button>
-    </div>
-  </article>
-
-</main>
-
-<section class="trust">
-  <div class="item"><div class="ico">🛡️</div><h4>平台担保</h4><p>资金先托管，确认收货后打款，0 风险。</p></div>
-  <div class="item"><div class="ico">✅</div><h4>验号再付</h4><p>下单前后均可验号，数据不符全额退。</p></div>
-  <div class="item"><div class="ico">⚡</div><h4>极速发货</h4><p>自动发货系统，平均 3 分钟到手。</p></div>
-  <div class="item"><div class="ico">💬</div><h4>7×24 客服</h4><p>专属客服在线，售后问题秒响应。</p></div>
-</section>
-
-<footer>
-  <div>© 2026 战神帐号铺 · 和平精英账号交易服务平台（演示页面）</div>
-  <div>
-    <a href="#">交易规则</a> · <a href="#">防骗指南</a> · <a href="#">联系客服</a>
-  </div>
-</footer>
-
-<div class="modal-overlay" id="payModal">
-  <div class="modal">
-    <button class="modal-close" id="modalClose" title="关闭">✕</button>
-    <h3 class="modal-title">扫码支付 · 和平精英账号</h3>
-    <div class="pay-no">支付单号：<span id="payNo"></span></div>
-    <div class="qr-box"><div class="qr" id="qr"></div></div>
-    <div class="pay-amount" id="payAmount"></div>
-    <div class="countdown">二维码有效期 <span id="countdown">15:00</span></div>
-    <p class="pay-tip">请使用微信 / 支付宝扫码支付，付款后联系客服即时发货。<br>超时请重新下单获取新收款码。</p>
-  </div>
-</div>
+<button id="toTop" title="返回顶部" aria-label="返回顶部">⬆️</button>
+<audio id="audio" preload="metadata"></audio>
 
 <script>
-  // 购买弹窗：收款码 + 随机支付单号 + 倒计时
-  const modal = document.getElementById('payModal');
-  const modalClose = document.getElementById('modalClose');
-  const payNoEl = document.getElementById('payNo');
-  const payAmountEl = document.getElementById('payAmount');
-  const countdownEl = document.getElementById('countdown');
-  const qrEl = document.getElementById('qr');
-  let timer = null;
+/* ===== 歌曲数据：音源均为外链（SoundHelix 公开测试音频）=====
+   封面使用 picsum.photos，加载失败自动回退为 emoji 渐变封面       */
+const songs = [
+  {n:'霓虹夜航', e:'🌃', c:'https://picsum.photos/seed/hall1/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
+  {n:'星尘来信', e:'✨', c:'https://picsum.photos/seed/hall2/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'},
+  {n:'深海回声', e:'🌊', c:'https://picsum.photos/seed/hall3/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'},
+  {n:'晨雾列车', e:'🚂', c:'https://picsum.photos/seed/hall4/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'},
+  {n:'落日飞行', e:'🌅', c:'https://picsum.photos/seed/hall5/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'},
+  {n:'像素心跳', e:'💗', c:'https://picsum.photos/seed/hall6/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'},
+  {n:'真空漫游', e:'🪐', c:'https://picsum.photos/seed/hall7/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3'},
+  {n:'雨夜书局', e:'🌧️', c:'https://picsum.photos/seed/hall8/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'},
+  {n:'云端信号', e:'☁️', c:'https://picsum.photos/seed/hall9/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3'},
+  {n:'午夜电台', e:'📻', c:'https://picsum.photos/seed/hall10/500', u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3'},
+  {n:'极光边界', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3'},
+  {n:'逆时针',   e:'🎐', c:'https://picsum.photos/seed/hall12/500', u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3'}
+];
 
-  function genPayNo() {
-    const ts = Date.now().toString().slice(-8);
-    let rnd = '';
-    for (let i = 0; i < 6; i++) rnd += Math.floor(Math.random() * 10);
-    return 'PK' + ts + rnd;
-  }
+const audio   = document.getElementById('audio');
+const player  = document.getElementById('player');
+const bar     = document.getElementById('bar');
+const toggleB = document.getElementById('toggle');
+const grid    = document.getElementById('grid');
+let cur = 0, seeking = false;
+audio.volume = 0.8;
 
-  function fmt(s) {
-    const m = String(Math.floor(s / 60)).padStart(2, '0');
-    const ss = String(s % 60).padStart(2, '0');
-    return m + ':' + ss;
-  }
+/* ===== 控制图标：明文内联 SVG，播放/暂停切换 path 的 d ===== */
+const PATH_PLAY  = 'M8 5v14l11-7z';
+const PATH_PAUSE = 'M6 5h4v14H6zm8 0h4v14h-4z';
+const playImg = document.getElementById('playImg');
+function setPlayIcon(on){ playImg.firstElementChild.setAttribute('d', on ? PATH_PAUSE : PATH_PLAY); }
+setPlayIcon(false);
 
-  function drawQR() {
-    const N = 23;
-    qrEl.style.gridTemplateColumns = 'repeat(' + N + ', 1fr)';
-    qrEl.innerHTML = '';
-    const ring = (r0, c0, r, c) => {
-      const lr = r - r0, lc = c - c0;
-      if (lr === 0 || lr === 6 || lc === 0 || lc === 6) return 1;
-      if (lr >= 2 && lr <= 4 && lc >= 2 && lc <= 4) return 1;
-      return 0;
-    };
-    const inBox = (r0, c0, r, c) => r >= r0 && r < r0 + 7 && c >= c0 && c < c0 + 7;
-    for (let r = 0; r < N; r++) {
-      for (let c = 0; c < N; c++) {
-        let on;
-        if (inBox(0, 0, r, c)) on = ring(0, 0, r, c);
-        else if (inBox(0, N - 7, r, c)) on = ring(0, N - 7, r, c);
-        else if (inBox(N - 7, 0, r, c)) on = ring(N - 7, 0, r, c);
-        else on = Math.random() > 0.5 ? 1 : 0;
-        const cell = document.createElement('div');
-        cell.className = 'qr-cell' + (on ? ' on' : '');
-        qrEl.appendChild(cell);
-      }
-    }
-  }
+/* 封面加载：失败回退 emoji */
+function setCover(box, s, imgSel, fbSel){
+  const img = box.querySelector(imgSel), fb = box.querySelector(fbSel);
+  img.style.display='block'; fb.style.display='none';
+  img.onerror = ()=>{ img.style.display='none'; fb.style.display='flex'; fb.textContent = s.e; };
+  img.src = s.c;
+}
+function fmt(t){ if(isNaN(t)) return '0:00'; const m=Math.floor(t/60), s=Math.floor(t%60); return m+':'+(s<10?'0':'')+s; }
 
-  function startCountdown() {
-    let remain = 15 * 60; // 15 分钟
-    clearInterval(timer);
-    countdownEl.textContent = fmt(remain);
-    timer = setInterval(() => {
-      remain--;
-      if (remain <= 0) {
-        clearInterval(timer);
-        countdownEl.textContent = '已失效';
-        return;
-      }
-      countdownEl.textContent = fmt(remain);
-    }, 1000);
-  }
+/* 生成频谱条（多彩渐变） */
+const eq = document.getElementById('eq');
+for(let i=0;i<26;i++){
+  const b=document.createElement('i');
+  const h1=Math.round(i*360/26), h2=(h1+45)%360;
+  b.style.background='linear-gradient(180deg,hsl('+h1+',95%,70%),hsl('+h2+',95%,50%))';
+  b.style.boxShadow='0 0 7px hsla('+h1+',95%,60%,.55)';
+  b.style.animationDelay=(-Math.random()).toFixed(2)+'s';
+  b.style.animationDuration=(0.5+Math.random()*0.7).toFixed(2)+'s';
+  eq.appendChild(b);
+}
 
-  function openModal(amount) {
-    payNoEl.textContent = genPayNo();
-    payAmountEl.textContent = amount;
-    drawQR();
-    startCountdown();
-    modal.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
+/* 生成歌曲按钮（无封面） */
+songs.forEach((s,i)=>{
+  const d=document.createElement('button');
+  d.type='button';
+  d.className='songbtn';
+  d.innerHTML='<span class="num">'+String(i+1).padStart(2,'0')+'</span>'+
+              '<span class="ico">'+s.e+'</span>'+
+              '<span class="txt"><span class="nm">'+s.n+'</span></span>'+
+              '<svg class="state" viewBox="0 0 24 24" fill="#ededed"><path d="'+PATH_PLAY+'"/></svg>';
+  d.onclick = ()=>{ i===cur ? togglePlay() : load(i, true); };
+  grid.appendChild(d);
+});
+document.getElementById('count').textContent = '共 '+songs.length+' 首 · 每行 4 首（窄屏自动 2 / 1 列）';
 
-  function closeModal() {
-    modal.classList.remove('show');
-    clearInterval(timer);
-    document.body.style.overflow = '';
-  }
+/* 返回顶部：滚动超过 180px 显示，点击平滑回顶 */
+const toTop=document.getElementById('toTop');
+window.addEventListener('scroll',()=>{ toTop.classList.toggle('show', window.scrollY>180); },{passive:true});
+toTop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 
-  modalClose.addEventListener('click', closeModal);
-  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+/* 加载曲目 */
+function load(i, autoplay){
+  cur=(i+songs.length)%songs.length;
+  const s=songs[cur];
+  document.getElementById('ptitle').textContent=s.n;
+  document.getElementById('partist').textContent='纯暗黑音乐馆';
+  audio.src=s.u;
+  audio.load();
+  document.querySelectorAll('.songbtn').forEach((el,k)=>el.classList.toggle('active',k===cur));
+  if(autoplay) play();
+}
+/* 播放 / 暂停 */
+function play(){ audio.play().then(()=>player.classList.add('playing')).catch(()=>{}); }
+function pause(){ audio.pause(); player.classList.remove('playing'); }
+function togglePlay(){ audio.paused ? play() : pause(); }
 
-  document.querySelectorAll('.buy').forEach(b => b.addEventListener('click', () => {
-    const card = b.closest('.card');
-    const priceEl = card.querySelector('.price');
-    const amount = priceEl.firstChild.textContent.trim();
-    openModal(amount);
-  }));
+toggleB.onclick=togglePlay;
+document.getElementById('prev').onclick=()=>load(cur-1,true);
+document.getElementById('next').onclick=()=>load(cur+1,true);
+
+/* 进度与事件 */
+audio.addEventListener('timeupdate',()=>{
+  if(!seeking && audio.duration) bar.value=Math.round(audio.currentTime/audio.duration*1000);
+  document.getElementById('cur').textContent=fmt(audio.currentTime);
+});
+audio.addEventListener('loadedmetadata',()=>{ document.getElementById('dur').textContent=fmt(audio.duration); });
+audio.addEventListener('ended',()=>load(cur+1,true));
+audio.addEventListener('pause',()=>{ player.classList.remove('playing'); setPlayIcon(false); });
+audio.addEventListener('play', ()=>{ player.classList.add('playing');  setPlayIcon(true);  });
+
+bar.addEventListener('input',()=>{ seeking=true; if(audio.duration) audio.currentTime=bar.value/1000*audio.duration; });
+bar.addEventListener('change',()=>{ seeking=false; });
+document.getElementById('vol').addEventListener('input',e=>{ audio.volume=parseFloat(e.target.value); });
+
+/* 初始化：显示第一首但不自动播放（遵守浏览器自动播放策略） */
+load(0,false);
 </script>
 </body>
 </html>
