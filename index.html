@@ -55,17 +55,19 @@ h1 .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135d
 .ptitle{font-size:clamp(20px,3vw,31px);font-weight:700;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .partist{color:var(--tx2);font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 
-/* 频谱均衡器（CSS 动画，播放时滚动） */
-.eq{display:flex;gap:4px;align-items:flex-end;height:26px;margin-bottom:14px}
-.eq i{width:4px;border-radius:4px;background:#fff;height:18%;animation:eq .9s ease-in-out infinite alternate;animation-play-state:paused;opacity:.9}
+/* 频谱 + 进度条：共用网格，频谱在进度条正上方居中、同宽，并加宽加高 */
+.seekwrap{display:grid;grid-template-columns:38px minmax(0,1fr) 38px;gap:6px 12px;align-items:center}
+.eq{grid-column:2;grid-row:1;display:flex;justify-content:center;gap:5px;align-items:flex-end;height:48px}
+.eq i{width:8px;border-radius:6px;background:#fff;height:18%;animation:eq .9s ease-in-out infinite alternate;animation-play-state:paused;opacity:.9}
 .player.playing .eq i{animation-play-state:running}
 @keyframes eq{from{height:14%}to{height:100%}}
 
 /* 进度条 */
-.seekrow{display:flex;align-items:center;gap:12px}
-.bar{-webkit-appearance:none;appearance:none;flex:1;height:8px;border-radius:8px;background:#09090e;box-shadow:inset 2px 2px 5px var(--sd),inset -1px -1px 3px var(--sl);outline:none;cursor:pointer}
+#cur{grid-column:1;grid-row:2}
+.bar{grid-column:2;grid-row:2;width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:8px;background:#09090e;box-shadow:inset 2px 2px 5px var(--sd),inset -1px -1px 3px var(--sl);outline:none;cursor:pointer}
 .bar::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--c));box-shadow:0 0 12px rgba(255,255,255,.45);cursor:pointer}
 .bar::-moz-range-thumb{width:15px;height:15px;border:none;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--c));box-shadow:0 0 12px rgba(255,255,255,.45);cursor:pointer}
+#dur{grid-column:3;grid-row:2;text-align:right}
 .tm{font-size:12px;color:var(--tx2);font-variant-numeric:tabular-nums;min-width:38px}
 
 /* 控制按钮 */
@@ -104,11 +106,22 @@ h1 .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135d
 .songbtn.active{border-color:var(--p);box-shadow:6px 6px 14px var(--sd),-6px -6px 12px var(--sl),0 0 0 1px var(--p),0 9px 24px rgba(255,255,255,.1)}
 .songbtn .num{width:27px;height:27px;flex:none;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--tx2);background:var(--panel-2);box-shadow:inset 2px 2px 5px var(--sd),inset -2px -2px 5px var(--sl)}
 .songbtn.active .num{background:linear-gradient(135deg,var(--p),var(--c));color:#fff;box-shadow:none}
-.songbtn .ico{font-size:19px;flex:none;line-height:1}
 .songbtn .txt{flex:1;min-width:0}
 .songbtn .nm{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .songbtn .state{width:15px;height:15px;flex:none;display:block;opacity:0;transition:.18s;filter:brightness(1.15)}
 .songbtn.active .state{opacity:1}
+
+/* ========== 分页 ========== */
+.pager{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:26px;flex-wrap:wrap}
+.pager button{
+  min-width:38px;height:38px;padding:0 12px;font-family:inherit;font-size:13px;color:var(--tx);
+  cursor:pointer;background:var(--panel);border:1px solid transparent;border-radius:11px;
+  box-shadow:5px 5px 12px var(--sd),-5px -5px 10px var(--sl);transition:transform .16s,border-color .16s;
+}
+.pager button:hover:not(:disabled){transform:translateY(-2px)}
+.pager button:active:not(:disabled){box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl);transform:translateY(0)}
+.pager button.on{border-color:var(--p);color:#fff;background:linear-gradient(135deg,var(--p),var(--c));box-shadow:none}
+.pager button:disabled{opacity:.35;cursor:not-allowed}
 
 /* ========== 返回顶部 ========== */
 #toTop{
@@ -131,9 +144,10 @@ h1 .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135d
   .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .songbtn{gap:7px;padding:11px 9px;border-radius:12px}
   .songbtn .num{width:22px;height:22px;font-size:11px}
-  .songbtn .ico{font-size:16px}
   .songbtn .nm{font-size:12px}
   .songbtn .state{width:12px;height:12px}
+  .eq{height:36px;gap:3px}
+  .eq i{width:5px;border-radius:4px}
   .player{flex-direction:column;text-align:center}
   .pcover{flex:none;width:min(72vw,240px)}
   .partist{justify-content:center}
@@ -145,7 +159,7 @@ h1 .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135d
 <body>
 <div class="wrap">
   <header>
-    <h1><span class="dot"></span>🎵 音乐馆</h1>
+    <h1><span class="dot"></span>🎵 林熙音乐馆</h1>
     <div class="badge">🎧 即点即播</div>
   </header>
 
@@ -156,8 +170,8 @@ h1 .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135d
       <span class="ptag">NOW PLAYING</span>
       <div class="ptitle" id="ptitle">选择一首歌开始</div>
       <div class="partist"><span id="partist">纯暗黑音乐馆</span></div>
-      <div class="eq" id="eq"></div>
-      <div class="seekrow">
+      <div class="seekwrap">
+        <div class="eq" id="eq"></div>
         <span class="tm" id="cur">0:00</span>
         <input type="range" class="bar" id="bar" value="0" min="0" max="1000" aria-label="播放进度">
         <span class="tm" id="dur">0:00</span>
@@ -172,6 +186,9 @@ h1 .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135d
         <button class="btn sm" id="next" title="下一首">
           <svg viewBox="0 0 24 24" fill="#ededed"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
         </button>
+        <button class="btn sm" id="mode" title="播放模式：循环播放" aria-label="切换播放模式">
+          <svg viewBox="0 0 24 24" fill="#ededed"><path id="modePath" d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+        </button>
         <div class="vol">
           <svg viewBox="0 0 24 24" fill="#ededed"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.8-1-3.3-2.5-4v8c1.5-.7 2.5-2.2 2.5-4z"/></svg>
           <input type="range" id="vol" min="0" max="1" step="0.01" value="0.8" aria-label="音量">
@@ -183,18 +200,19 @@ h1 .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135d
   <!-- 歌曲列表：4 首一行 -->
   <div class="sec"><b>曲库</b><span id="count"></span></div>
   <div class="grid" id="grid"></div>
+  <div class="pager" id="pager"></div>
 </div>
 
 <button id="toTop" title="返回顶部" aria-label="返回顶部">⬆️</button>
 <audio id="audio" preload="metadata"></audio>
 
 <script>
-/* ===== 歌曲数据：音源均为外链（SoundHelix 公开测试音频）=====
+/* ===== 歌曲数据：前 3 首为用户真实外链，其余循环扩展用于分页演示 =====
    封面使用 picsum.photos，加载失败自动回退为 emoji 渐变封面       */
-const songs = [
-  {n:'六哲 - 落泥花', e:'🌃', c:'https://picsum.photos/seed/hall1/500',  u:'https://57zy.ccwu.cc/%E5%85%AD%E5%93%B2%20-%20%E8%90%BD%E6%B3%A5%E8%8A%B1.m4a'},
-  {n:'星尘来信', e:'✨', c:'https://picsum.photos/seed/hall2/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'},
-  {n:'深海回声', e:'🌊', c:'https://picsum.photos/seed/hall3/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'},
+const BASE = [
+  {n:'江楠楠-慢红尘', e:'🌃', c:'https://picsum.photos/seed/hall1/500',  u:'https://57zy.ccwu.cc/Music/%E6%B1%9F%E6%A5%A0%E6%A5%A0%20-%20%E6%85%A2%E7%BA%A2%E5%B0%98.m4a'},
+  {n:'温韵兮-你是否还会提起往事(深情版)', e:'✨', c:'https://picsum.photos/seed/hall2/500',  u:'https://57zy.ccwu.cc/Music/%E6%B8%A9%E9%9F%B5%E5%85%AE%20-%20%E4%BD%A0%E6%98%AF%E5%90%A6%E8%BF%98%E4%BC%9A%E6%8F%90%E8%B5%B7%E5%BE%80%E4%BA%8B(%E6%B7%B1%E6%83%85%E7%89%88).m4a'},
+  {n:'小曼-往事难追', e:'🌊', c:'https://picsum.photos/seed/hall3/500',  u:'https://57zy.ccwu.cc/Music/%E5%B0%8F%E6%9B%BC-%E5%BE%80%E4%BA%8B%E9%9A%BE%E8%BF%BD.aac'},
   {n:'晨雾列车', e:'🚂', c:'https://picsum.photos/seed/hall4/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'},
   {n:'落日飞行', e:'🌅', c:'https://picsum.photos/seed/hall5/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'},
   {n:'像素心跳', e:'💗', c:'https://picsum.photos/seed/hall6/500',  u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'},
@@ -205,6 +223,15 @@ const songs = [
   {n:'极光边界', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3'},
   {n:'逆时针',   e:'🎐', c:'https://picsum.photos/seed/hall12/500', u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3'}
 ];
+const songs = Array.from({length:45}, (_,i)=>{
+  const b = BASE[i%BASE.length];
+  return {
+    n: b.n + (i>=BASE.length ? ' · '+Math.floor(i/BASE.length+1) : ''),
+    e: b.e,
+    c: i<BASE.length ? b.c : 'https://picsum.photos/seed/musichall'+(i+1)+'/500',
+    u: b.u
+  };
+});
 
 const audio   = document.getElementById('audio');
 const player  = document.getElementById('player');
@@ -220,6 +247,21 @@ const PATH_PAUSE = 'M6 5h4v14H6zm8 0h4v14h-4z';
 const playImg = document.getElementById('playImg');
 function setPlayIcon(on){ playImg.firstElementChild.setAttribute('d', on ? PATH_PAUSE : PATH_PLAY); }
 setPlayIcon(false);
+
+/* ===== 播放模式：0 循环播放(列表循环) / 1 列表播放(顺序播完停止) / 2 单曲循环 ===== */
+const MODE = [
+  { name:'循环播放', path:'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z' },
+  { name:'列表播放', path:'M4 6h13v2H4V6zm0 5h13v2H4v-2zm0 5h9v2H4v-2zm16-9l5 4-5 4v-8z' },
+  { name:'单曲循环', path:'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zM11.5 10.5h1V9h-1.2l-1.6 1.4V12h1.1v3h1.2v-4.5z' }
+];
+let mode = 0;
+const modeBtn = document.getElementById('mode');
+function applyMode(){
+  document.getElementById('modePath').setAttribute('d', MODE[mode].path);
+  modeBtn.title = '播放模式：' + MODE[mode].name;
+}
+modeBtn.onclick = ()=>{ mode=(mode+1)%MODE.length; applyMode(); };
+applyMode();
 
 /* 封面加载：失败回退 emoji */
 function setCover(box, s, imgSel, fbSel){
@@ -242,19 +284,58 @@ for(let i=0;i<26;i++){
   eq.appendChild(b);
 }
 
-/* 生成歌曲按钮（无封面） */
-songs.forEach((s,i)=>{
-  const d=document.createElement('button');
-  d.type='button';
-  d.className='songbtn';
-  d.innerHTML='<span class="num">'+String(i+1).padStart(2,'0')+'</span>'+
-              '<span class="ico">'+s.e+'</span>'+
-              '<span class="txt"><span class="nm">'+s.n+'</span></span>'+
-              '<svg class="state" viewBox="0 0 24 24" fill="#ededed"><path d="'+PATH_PLAY+'"/></svg>';
-  d.onclick = ()=>{ i===cur ? togglePlay() : load(i, true); };
-  grid.appendChild(d);
-});
-document.getElementById('count').textContent = '共 '+songs.length+' 首 · 每行 4 首（窄屏自动 2 / 1 列）';
+/* ===== 分页：每页 20 首，切换不刷新 ===== */
+const PAGE_SIZE = 20;
+const pager = document.getElementById('pager');
+const totalPages = Math.ceil(songs.length / PAGE_SIZE);
+let page = 1;
+
+function renderPage(p){
+  page = p;
+  grid.innerHTML = '';
+  const start = (p-1)*PAGE_SIZE;
+  const end = Math.min(start+PAGE_SIZE, songs.length);
+  for(let i=start;i<end;i++){
+    const s=songs[i];
+    const d=document.createElement('button');
+    d.type='button';
+    d.className='songbtn' + (i===cur ? ' active' : '');
+    d.dataset.idx = i;
+    d.innerHTML='<span class="num">'+String(i+1).padStart(2,'0')+'</span>'+
+                '<span class="txt"><span class="nm">'+s.n+'</span></span>'+
+                '<svg class="state" viewBox="0 0 24 24" fill="#ededed"><path d="'+PATH_PLAY+'"/></svg>';
+    d.onclick = ()=>{ i===cur ? togglePlay() : load(i, true); };
+    grid.appendChild(d);
+  }
+  renderPager();
+}
+
+function renderPager(){
+  pager.innerHTML='';
+  if(totalPages<=1){ pager.style.display='none'; return; }
+  pager.style.display='flex';
+  const mk=(label, target, disabled, on)=>{
+    const b=document.createElement('button');
+    b.textContent=label;
+    if(on) b.className='on';
+    if(disabled) b.disabled=true;
+    else b.onclick=()=>goPage(target);
+    return b;
+  };
+  pager.appendChild(mk('上一页', page-1, page===1, false));
+  for(let k=1;k<=totalPages;k++) pager.appendChild(mk(String(k), k, false, k===page));
+  pager.appendChild(mk('下一页', page+1, page===totalPages, false));
+}
+
+function goPage(p){
+  if(p<1 || p>totalPages || p===page) return;
+  renderPage(p);
+  const sec=document.querySelector('.sec');
+  if(sec) window.scrollTo({top: sec.offsetTop-18, behavior:'smooth'});
+}
+
+renderPage(1);
+document.getElementById('count').textContent = '共 '+songs.length+' 首 · 每页 '+PAGE_SIZE+' 首 · 共 '+totalPages+' 页';
 
 /* 返回顶部：滚动超过 180px 显示，点击平滑回顶 */
 const toTop=document.getElementById('toTop');
@@ -269,7 +350,10 @@ function load(i, autoplay){
   document.getElementById('partist').textContent='纯暗黑音乐馆';
   audio.src=s.u;
   audio.load();
-  document.querySelectorAll('.songbtn').forEach((el,k)=>el.classList.toggle('active',k===cur));
+  /* 若当前曲目不在本页，自动跳到所在页 */
+  const targetPage = Math.floor(cur/PAGE_SIZE)+1;
+  if(targetPage!==page) renderPage(targetPage);
+  else document.querySelectorAll('.songbtn').forEach(el=>el.classList.toggle('active', Number(el.dataset.idx)===cur));
   if(autoplay) play();
 }
 /* 播放 / 暂停 */
@@ -279,7 +363,10 @@ function togglePlay(){ audio.paused ? play() : pause(); }
 
 toggleB.onclick=togglePlay;
 document.getElementById('prev').onclick=()=>load(cur-1,true);
-document.getElementById('next').onclick=()=>load(cur+1,true);
+document.getElementById('next').onclick=()=>{
+  if(mode===1 && cur===songs.length-1) return;  /* 列表播放：末尾不再前进 */
+  load(cur+1,true);
+};
 
 /* 进度与事件 */
 audio.addEventListener('timeupdate',()=>{
@@ -287,7 +374,15 @@ audio.addEventListener('timeupdate',()=>{
   document.getElementById('cur').textContent=fmt(audio.currentTime);
 });
 audio.addEventListener('loadedmetadata',()=>{ document.getElementById('dur').textContent=fmt(audio.duration); });
-audio.addEventListener('ended',()=>load(cur+1,true));
+audio.addEventListener('ended',()=>{
+  if(mode===2){ load(cur,true); return; }                    /* 单曲循环：重播当前 */
+  if(mode===1 && cur===songs.length-1){                      /* 列表播放：最后一首停止 */
+    player.classList.remove('playing'); setPlayIcon(false);
+    document.getElementById('partist').textContent='列表播放完毕';
+    return;
+  }
+  load(cur+1,true);                                          /* 循环播放：顺序并回到开头 */
+});
 audio.addEventListener('pause',()=>{ player.classList.remove('playing'); setPlayIcon(false); });
 audio.addEventListener('play', ()=>{ player.classList.add('playing');  setPlayIcon(true);  });
 
