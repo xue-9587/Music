@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎵 音乐馆 · Music Hall</title>
+<title>🎵 林熙音乐馆 · 在线聆听！</title>
+<meta name="Keywords" content="林熙在线音乐,林熙音乐试听,免费音乐下载,mp3音乐外链"/>
+<meta name="description" content="林熙在线音乐馆，提供在线免费试听好听音乐与你共分享！"/>
 <style>
 /* ========== 基础 & 主题变量 ========== */
 *{margin:0;padding:0;box-sizing:border-box}
@@ -160,16 +162,16 @@ h1 .dot{width:11px;height:11px;border-radius:50%;background:linear-gradient(135d
 <div class="wrap">
   <header>
     <h1><span class="dot"></span>🎵 林熙音乐馆</h1>
-    <div class="badge">🎧 即点即播</div>
+    <div class="badge">🎧 好听音乐与你共分享！</div>
   </header>
 
   <!-- 横向封面播放器 -->
   <section class="player" id="player">
     <div class="pcover" id="pcover"><img id="pcoverImg" alt="封面" src="/tx.png" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fb">🎵</div></div>
     <div class="pinfo">
-      <span class="ptag">NOW PLAYING</span>
+      <span class="ptag">yunp.sylu.cc</span>
       <div class="ptitle" id="ptitle">选择一首歌开始</div>
-      <div class="partist"><span id="partist">纯暗黑音乐馆</span></div>
+      <div class="partist"><span id="partist">在线音乐馆</span></div>
       <div class="seekwrap">
         <div class="eq" id="eq"></div>
         <span class="tm" id="cur">0:00</span>
@@ -220,7 +222,24 @@ const BASE = [
   {n:'米拓果果-有缘相遇无缘相依（女版）', e:'🌧️', c:'https://picsum.photos/seed/hall8/500',  u:'/Music/米拓果果%20-%20有缘相遇无缘相依（女版）.aac'},
   {n:'六哲-落泥花', e:'☁️', c:'https://picsum.photos/seed/hall9/500',  u:'/Music/六哲%20-%20落泥花.m4a'},
   {n:'貮婶子-今生劫换来生缘', e:'📻', c:'https://picsum.photos/seed/hall10/500', u:'/Music/貮婶子-今生劫换来生缘.mp3'},
-  {n:'极光边界', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3'},
+  {n:'洋澜一-见一面少一面', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/洋澜一-见一面少一面.mp3'},
+  {n:'洋澜一-空荡的酒杯', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/洋澜一-空荡的酒杯.mp3'},
+  {n:'洋澜一-秋风吹起', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/洋澜一-秋风吹起.mp3'},
+  {n:'洋澜一-来人间走个过场', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/洋澜一-来人间走个过场.mp3'},
+  {n:'恋特特-吃糖都不甜的年纪', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/恋特特-吃糖都不甜的年纪.mp3'},
+  {n:'怪阿姨-放纵L', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/怪阿姨-放纵L.mp3'},
+  {n:'吕口口-有风无风皆自由', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/吕口口-有风无风皆自由.mp3'},
+  {n:'吕口口-断了联系却断不了想你', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/吕口口-断了联系却断不了想你.mp3'},
+  {n:'吕口口-我给你最后的爱是不打扰', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/吕口口-我给你最后的爱是不打扰.mp3'},
+  {n:'苏谭谭-烈酒狂沙（DJ默涵版）', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/苏谭谭-烈酒狂沙（DJ默涵版）.mp3'},
+  {n:'名称', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/地址'},
+  {n:'名称', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/地址'},
+  {n:'名称', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/地址'},
+  {n:'名称', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/地址'},
+  {n:'名称', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/地址'},
+  {n:'名称', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/地址'},
+  {n:'名称', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/地址'},
+  {n:'名称', e:'🌌', c:'https://picsum.photos/seed/hall11/500', u:'/Music/地址'},
   {n:'菲儿- 我给自己斟满酒', e:'🎐', c:'https://picsum.photos/seed/hall12/500', u:'/Music/Mp3 菲儿、DJ默涵 - 我给自己斟满酒(DJ默涵版).m4a'}
 ];
 const songs = Array.from({length:45}, (_,i)=>{
@@ -347,7 +366,7 @@ function load(i, autoplay){
   cur=(i+songs.length)%songs.length;
   const s=songs[cur];
   document.getElementById('ptitle').textContent=s.n;
-  document.getElementById('partist').textContent='纯暗黑音乐馆';
+  document.getElementById('partist').textContent='在线音乐馆';
   audio.src=s.u;
   audio.load();
   /* 若当前曲目不在本页，自动跳到所在页 */
